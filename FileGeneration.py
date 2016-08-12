@@ -105,7 +105,10 @@ for i in range(1,len(read_flatfile)):
         hi_diag='HI*ABK:'+read_flatfile[i].split(',')[38].strip()+'~'
         file.append(hi_diag+'\n')
     else:
-        hi_diag='HI*ABK:'+read_flatfile[i].split(',')[38].strip()+diagnull(read_flatfile[i].split(',')[42].strip(),diagnull(read_flatfile[i].split(',')[41].strip(),diagnull(read_flatfile[i].split(',')[40].strip(),diagnull(read_flatfile[i].split(',')[39].strip(),'~'))))+'~'
+        hi_diag=('HI*ABK:'+read_flatfile[i].split(',')[38].strip()+diagnull(read_flatfile[i].split(',')[42].strip(),'')+
+                 diagnull(read_flatfile[i].split(',')[41].strip(),'')+
+                 diagnull(read_flatfile[i].split(',')[40].strip(),'')+
+                 diagnull(read_flatfile[i].split(',')[39].strip(),'')+'~')
         file.append(hi_diag+'\n')
 
     if(read_flatfile[i].split(',')[52].strip()=='NULL'):
