@@ -7,15 +7,20 @@ def ifnull(var, val):
     return val
   return var
 
+def diagnull(var, val):
+  if (var is None or var=='NULL' or var==''):
+    return val
+  return '*ABF:'+var
+
 file=[]
+j=1
 for i in range(1,len(read_flatfile)):
 
-    if(i==1):
-        bp_hl='HL*'+str(i)+'**20*1~'
-        file.append(bp_hl+'\n')
-    else:
-        bp_hl='HL*'+str(i+1)+'**20*1~'
-        file.append(bp_hl+'\n')
+
+    bp_hl='HL*'+str(j)+'**20*1~'
+    j=j+1
+    file.append(bp_hl+'\n')
+
 
     prv='PRV*BI*PXC*'+read_flatfile[i].split(',')[5].strip()+'~'
     file.append(prv+'\n')
@@ -43,7 +48,8 @@ for i in range(1,len(read_flatfile)):
     bp_tax='REF*EI*'+read_flatfile[i].split(',')[4].strip()+'~'
     file.append(bp_tax+'\n')
 
-    sb_hl='HL*'+str(i+1)+'*'+str(i)+'*22*0~'
+    sb_hl='HL*'+str(j)+'*'+str(j-1)+'*22*0~'
+    j=j+1
     file.append(sb_hl+'\n')
 
     sbr='SBR*S*18*******MB~'
@@ -52,8 +58,8 @@ for i in range(1,len(read_flatfile)):
     if(read_flatfile[i].split(',')[14].strip()=='NULL' and read_flatfile[i].split(',')[13].strip()=='NULL'):
         sbr_nm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
         file.append(sbr_nm1+'\n')
-    elif(read_flatfile[i].split(',')[14].strip()!='NULL' and read_flatfile[i].split(',')[13].strip()=='NULL'):
-        sbr_nm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+read_flatfile[i].split(',')[14].strip()+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
+    elif(read_flatfile[i].split(',')[14].strip()!='NULL' and read_flatfile[i].split(',')[13].strip()=="NULL"):
+        sbr_nm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+read_flatfile[i].split(',')[14].strip()+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
         file.append(sbr_nm1+'\n')
     elif(read_flatfile[i].split(',')[14].strip()=='NULL' and read_flatfile[i].split(',')[13].strip()!='NULL'):
         sbr_nm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+read_flatfile[i].split(',')[13].strip()+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
@@ -95,8 +101,12 @@ for i in range(1,len(read_flatfile)):
         med='REF*EA*'+read_flatfile[i].split(',')[36].strip()+'~'
         file.append(med+'\n')
 
-    hi_diag='HI*ABK:'+read_flatfile[i].split(',')[38].strip()+ifnull(read_flatfile[i].split(',')[39].strip(),ifnull(read_flatfile[i].split(',')[40].strip(),ifnull(read_flatfile[i].split(',')[41].strip(),ifnull(read_flatfile[i].split(',')[42].strip(),'~'))))
-    file.append(hi_diag+'\n')
+    if(read_flatfile[i].split(',')[39].strip()=='NULL' or read_flatfile[i].split(',')[39].strip()==''):
+        hi_diag='HI*ABK:'+read_flatfile[i].split(',')[38].strip()+'~'
+        file.append(hi_diag+'\n')
+    else:
+        hi_diag='HI*ABK:'+read_flatfile[i].split(',')[38].strip()+diagnull(read_flatfile[i].split(',')[42].strip(),diagnull(read_flatfile[i].split(',')[41].strip(),diagnull(read_flatfile[i].split(',')[40].strip(),diagnull(read_flatfile[i].split(',')[39].strip(),'~'))))+'~'
+        file.append(hi_diag+'\n')
 
     if(read_flatfile[i].split(',')[52].strip()=='NULL'):
         re_nm1='NM1*82*1*'+read_flatfile[i].split(',')[51].strip()+'*****XX*'+str(read_flatfile[i].split(',')[50].strip())+'~'
@@ -121,7 +131,7 @@ for i in range(1,len(read_flatfile)):
         sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
         file.append(sbr_onm1+'\n')
     elif(read_flatfile[i].split(',')[14].strip()!='NULL' and read_flatfile[i].split(',')[13].strip()=='NULL'):
-        sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+read_flatfile[i].split(',')[14].strip()+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
+        sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+read_flatfile[i].split(',')[14].strip()+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
         file.append(sbr_onm1+'\n')
     elif(read_flatfile[i].split(',')[14].strip()=='NULL' and read_flatfile[i].split(',')[13].strip()!='NULL'):
         sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+read_flatfile[i].split(',')[13].strip()+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
