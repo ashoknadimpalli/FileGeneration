@@ -89,6 +89,53 @@ for i in range(1,len(read_flatfile)):
     elif(read_flatfile[i].split(',')[2].strip()!='NULL' and read_flatfile[i].split(',')[3].strip()!='NULL'):
         re_nm1='NM1*82*1*'+read_flatfile[i].split(',')[51].strip()+'*'+read_flatfile[i].split(',')[52].strip()+'*'+read_flatfile[i].split(',')[53].strip()+'***XX*'+str(read_flatfile[i].split(',')[0].strip())+'~'
         file.append(re_nm1+'\n')
+    sbr_other='SBR*P*18*******16~'
+    file.append(sbr_other+'\n')
+    sbr_payerpaid='AMT*D*'+str(read_flatfile[i].split(',')[54].strip())+'~'
+    file.append(sbr_payerpaid+'\n')
+    sbr_oi='OI***W***I~'
+    file.append(sbr_oi+'\n')
+    if(read_flatfile[i].split(',')[14].strip()=='NULL' and read_flatfile[i].split(',')[13].strip()=='NULL'):
+        sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
+        file.append(sbr_onm1+'\n')
+    elif(read_flatfile[i].split(',')[14].strip()!='NULL' and read_flatfile[i].split(',')[13].strip()=='NULL'):
+        sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+read_flatfile[i].split(',')[14].strip()+'*'+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
+        file.append(sbr_onm1+'\n')
+    elif(read_flatfile[i].split(',')[14].strip()=='NULL' and read_flatfile[i].split(',')[13].strip()!='NULL'):
+        sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+read_flatfile[i].split(',')[13].strip()+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
+        file.append(sbr_onm1+'\n')
+    else:
+        sbr_onm1='NM1*IL*1*'+read_flatfile[i].split(',')[12].strip()+'*'+read_flatfile[i].split(',')[14].strip()+'*'+read_flatfile[i].split(',')[13].strip()+'*'+'**MI*'+read_flatfile[i].split(',')[11].strip()+'~'
+        file.append(sbr_onm1+'\n')
+    if(read_flatfile[i].split(',')[16].strip()=='NULL'):
+        sbr_on3='N3*'+read_flatfile[i].split(',')[15].strip()+'~'
+        file.append(sbr_on3+'\n')
+    else:
+        sbr_on3='N3*'+read_flatfile[i].split(',')[15].strip()+'*'+read_flatfile[i].split(',')[16].strip()+'~'
+        file.append(sbr_on3+'\n')
+
+    sbr_on4='N4*'+read_flatfile[i].split(',')[17].strip()+'*'+read_flatfile[i].split(',')[18].strip()+'*'+read_flatfile[i].split(',')[19].strip()+'~'
+    file.append(sbr_on4+'\n')
+    oth_payer='NM1*PR*2*Network Health*****XV*'+read_flatfile[i].split(',')[22].strip()+'~'
+    file.append(oth_payer+'\n')
+    lx='LX*'+str(read_flatfile[i].split(',')[55].strip())+'~'
+    file.append(lx+'\n')
+    if(read_flatfile[i].split(',')[57].strip()=='' and read_flatfile[i].split(',')[58].strip()=='' and read_flatfile[i].split(',')[59].strip()=='' and read_flatfile[i].split(',')[60].strip()==''):
+        sv1='SV1*HC:'+str(read_flatfile[i].split(',')[56].strip())+'*'+read_flatfile[i].split(',')[24].strip()+'*UN*'+str(read_flatfile[i].split(',')[63].strip())+'***1~'
+    elif(read_flatfile[i].split(',')[57].strip()!='' and read_flatfile[i].split(',')[58].strip()=='' and read_flatfile[i].split(',')[59].strip()=='' and read_flatfile[i].split(',')[60].strip()==''):
+        sv1='SV1*HC:'+str(read_flatfile[i].split(',')[56].strip())+':'+read_flatfile[i].split(',')[57].strip()+'*'+read_flatfile[i].split(',')[24].strip()+'*UN*'+str(read_flatfile[i].split(',')[63].strip())+'***1~'
+    elif(read_flatfile[i].split(',')[57].strip()!='' and read_flatfile[i].split(',')[58].strip()!='' and read_flatfile[i].split(',')[59].strip()=='' and read_flatfile[i].split(',')[60].strip()==''):
+        sv1='SV1*HC:'+str(read_flatfile[i].split(',')[56].strip())+':'+read_flatfile[i].split(',')[57].strip()+':'+read_flatfile[i].split(',')[58].strip()+'*'+read_flatfile[i].split(',')[24].strip()+'*UN*'+str(read_flatfile[i].split(',')[63].strip())+'***1~'
+    elif(read_flatfile[i].split(',')[57].strip()!='' and read_flatfile[i].split(',')[58].strip()!='' and read_flatfile[i].split(',')[59].strip()!='' and read_flatfile[i].split(',')[60].strip()!=''):
+        sv1='SV1*HC:'+str(read_flatfile[i].split(',')[56].strip())+':'+read_flatfile[i].split(',')[57].strip()+':'+read_flatfile[i].split(',')[58].strip()+':'+read_flatfile[i].split(',')[59].strip()+':'+read_flatfile[i].split(',')[60].strip()+'*'+read_flatfile[i].split(',')[24].strip()+'*UN*'+str(read_flatfile[i].split(',')[63].strip())+'***1~'
+    file.append(sv1+'\n')
+
+
+
+
+
+
+
 file_concatenate=''.join(file)
 print(file_concatenate)
 
